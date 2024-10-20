@@ -26,10 +26,14 @@ export default function Header() {
 			<div className="flex justify-self-center">
 				<h1 className="text-3xl font-medium text-center">
 					<span className="text-5xl"> 
-						{Math.floor(frameworks)}
+						{Math.floor(frameworks).toLocaleString('en-US', {
+							maximumFractionDigits: 2,
+							notation: 'compact',
+							compactDisplay: 'short'
+						})}
 					</span>
 					<br />
-					{frameworks == 1 ? 'Framework' : 'Frameworks' }
+					JS Frameworks
 				</h1>
 			</div>
 			<div className="flex gap-8 justify-self-end">

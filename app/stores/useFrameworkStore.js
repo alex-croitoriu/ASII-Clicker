@@ -1,30 +1,37 @@
 import { create } from 'zustand'
 
 const useFrameworkStore = create((set) => ({
-	frameworks: 10000,
+	frameworks: 100,
+	lifetimeFrameworks: 0,
 	frameworksPerClick: 1,
-	frameworksPerSecond: 0,
+	frameworksPerSecond: 1,
 
-	buyUpgrade: (upgrade) => {
+	upgradeStats: (upgradeTree) => {
 		set((state) => ({
-			frameworks: state.frameworks - upgrade.cost
+			frameworks: state.frameworks - upgradeTree.tree[upgradeTree.level].cost
 		}))
-		if (upgrade.type === 'FPS')
+		if (upgradeTree.type === 'FPS')
 			set((state) => ({
-				frameworksPerSecond:  Math.round((state.frameworksPerSecond + upgrade.amount) * 10) / 10
+				frameworksPerSecond:  Math.round((state.frameworksPerSecond + upgradeTree.tree[upgradeTree.level].amount) * 10) / 10
 			}))
-		else if (upgrade.type === 'FPC')
+		else if (upgradeTree.type === 'FPC')
 			set((state) => ({
-				frameworksPerClick:  Math.round((state.frameworksPerClick + upgrade.amount) * 10) / 10
+				frameworksPerClick:  Math.round((state.frameworksPerClick + upgradeTree.tree[upgradeTree.level].amount) * 10) / 10
 			}))
 	},
+
 	incrementFrameworksOnClick: () =>
 		set((state) => ({
-			frameworks: state.frameworks + state.frameworksPerClick
+			frameworks: state.frameworks + state.frameworksPerClick,
+			lifetimeFrameworks: state.lifetimeFrameworks + state.frameworksPerClick
 		})),
+
 	autoIncrementFrameworks: () => {
 		const intervalId = setInterval(() => {
-			set((state) => ({ frameworks: state.frameworks + state.frameworksPerSecond }))
+			set((state) => ({ 
+				frameworks: state.frameworks + state.frameworksPerSecond,
+				lifetimeFrameworks: state.lifetimeFrameworks + state.frameworksPerClick
+			}))
 		}, 1000)
 		return { intervalId }
 	}
