@@ -30,7 +30,7 @@ const useFrameworkStore = create((set) => ({
 		const intervalId = setInterval(() => {
 			set((state) => ({ 
 				frameworks: state.frameworks + state.frameworksPerSecond,
-				lifetimeFrameworks: state.lifetimeFrameworks + state.frameworksPerClick
+				lifetimeFrameworks: state.lifetimeFrameworks + state.frameworksPerSecond
 			}))
 		}, 1000)
 		return { intervalId }
