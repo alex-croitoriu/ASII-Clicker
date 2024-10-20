@@ -7,5 +7,23 @@
 @layer base {
     html {
         font-family: 'Afacad Flux', system-ui;
+        width: 100vw;
+        overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #1f2937;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #4b5563;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #6b7280;
     }
 }
