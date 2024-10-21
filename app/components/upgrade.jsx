@@ -4,7 +4,9 @@ import useUpgradeStore from '../stores/useUpgradeStore'
 import useFrameworkStore from '../stores/useFrameworkStore'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination } from 'swiper/modules';
 import 'swiper/css'
+import 'swiper/css/pagination';
 
 const UpgradeComponent = () => {
 	const { upgradeTrees, loading, initialize, advance } = useUpgradeStore()
@@ -28,7 +30,7 @@ const UpgradeComponent = () => {
 	const style = (cost, upgradeTree) => {
 		return `outline-none text-[17px] transition rounded-xl py-1 px-2.5 overflow-hidden ${
 			frameworks < cost || upgradeTree.level >= upgradeTree.maxLevel
-				? 'bg-gray-500 text-gray-300 font-semibold cursor-not-allowed'
+				? 'bg-gray-500 text-gray-300 font-semibold cursor-default'
 				: 'bg-yellow-primary text-gray-900 font-bold hover:opacity-75'
 		}`
 	}
@@ -83,87 +85,136 @@ const UpgradeComponent = () => {
 
 	return (
 		<div className="w-full mt-auto bg-gray-800">
-			<div className="bg-gray-600 h-40 mb-6 rounded-3xl mx-6 p-2">
-				<Swiper spaceBetween={8} slidesPerView={5} className="h-full">
+			<style>{`
+				.swiper {
+					--swiper-pagination-color: #f0da4e;
+					--swiper-pagination-left: auto;
+					--swiper-pagination-right: auto;
+					--swiper-pagination-bottom: -30px;
+					--swiper-pagination-top: auto;
+					--swiper-pagination-fraction-color: inherit;
+					--swiper-pagination-progressbar-bg-color: rgba(0, 0, 0, 0.25);
+					--swiper-pagination-progressbar-size: 4px;
+					--swiper-pagination-bullet-size: 6px;
+					--swiper-pagination-bullet-width: 6px;
+					--swiper-pagination-bullet-height: 6px;
+					--swiper-pagination-bullet-inactive-color: #6b7280;
+					--swiper-pagination-bullet-inactive-opacity: 0.75;
+					--swiper-pagination-bullet-opacity: 1;
+					--swiper-pagination-bullet-horizontal-gap: 4px;
+					--swiper-pagination-bullet-vertical-gap: 6px;
+					overflow-x: clip;
+					overflow-y: visible;
+				}
+			`}</style>
+			<div className="bg-gray-600 h-44 mb-6 rounded-3xl mx-5 md:mx-6 p-2">
+				<Swiper 
+					spaceBetween={8} 
+					slidesPerView={1}
+					modules={[Pagination]}
+					pagination={true}
+					className="rounded-2xl h-full"
+					breakpoints={{
+						700: {
+							slidesPerView: 2,
+						},
+						1000: {
+							slidesPerView: 3,
+						},
+						1450: {
+							slidesPerView: 4,
+						},
+						1700: {
+							slidesPerView: 5,
+						},
+					}}
+				>
 					{Object.entries(upgradeTrees).map(([index, value]) => {
 						return (
-							<SwiperSlide key={value._id}>
-								<div className="bg-gray-800 rounded-2xl w-full h-full flex flex-col gap-1.5 justify-center px-4">
-									<div className="flex items-center gap-1">
-										<div dangerouslySetInnerHTML={{ __html: icon(value.name) }}></div>
-										<p className="text-xl font-semibold">{value.name}</p>
-									</div>
-									<div className="leading-tight -mt-1 h-10">{value.tree[value.level].description}</div>
-									<div className="flex w-full justify-between items-center">
-										<div className="self-start">
-											<button
-												className={style(value.tree[value.level].upgradeCost, value)}
-												onClick={() => handleUpgrade(value._id, value)}
-											>
-												{value.level < value.maxLevel ? (
-													<div className="flex items-center">
-														<div className="mr-1 flex gap-1 items-center">
-															{value.level === 0 ? (
-																<svg
-																	width="20px"
-																	height="20px"
-																	viewBox="0 0 24 24"
-																	fill="none"
-																	xmlns="http://www.w3.org/2000/svg"
-																	className={svgStyle(value.tree[value.level].upgradeCost)}
-																>
-																	<path
-																		d="M12 14.5V16.5M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288"
-																		stroke-width="2"
-																		stroke-linecap="round"
-																		stroke-linejoin="round"
-																	/>
-																</svg>
-															) : (
-																<svg
-																	width="20px"
-																	height="20px"
-																	viewBox="0 0 24 24"
-																	fill="none"
-																	xmlns="http://www.w3.org/2000/svg"
-																	className={svgStyle(value.tree[value.level].upgradeCost)}
-																>
-																	<path
-																		d="M17.4 10L21 12L17.4 14M17.4 10L12 13L6.6 10M17.4 10L21 8L12 3L3 8L6.6 10M6.6 10L3 12L6.6 14M17.4 14L21 16L12 21L3 16L6.6 14M17.4 14L12 17L6.6 14"
-																		stroke-width="2"
-																		stroke-linecap="round"
-																		stroke-linejoin="round"
-																	/>
-																</svg>
-															)}
-															{value.level === 0 ? 'Unlock' : 'Upgrade'}
-														</div>
-														<span className="tracking-tighter">
-															(
-															{/* {value.tree[value.level].upgradeCost.toLocaleString('en-US', {
-																maximumFractionDigits: 2,
-																notation: 'compact',
-																compactDisplay: 'short'
-															})} */}
-															)
-														</span>
-													</div>
-												) : (
-													<span>Max Level</span>
-												)}
-											</button>
+							<SwiperSlide key={value._id} className="rounded-2xl overflow-hidden h-full">
+								<div className="rounded-2xl overflow-hidden h-full">
+									<div className="bg-gray-800 rounded-2xl overflow-hidden w-full h-full flex flex-col gap-1.5 justify-center px-4">
+										<div className="flex items-center gap-1">
+											<div dangerouslySetInnerHTML={{ __html: icon(value.name) }}></div>
+											<p className="text-xl font-semibold">{value.name}</p>
 										</div>
-										<p className="text-lg">{value.level !== 0 ? `Level ${value.level}` : ''}</p>
-									</div>
+										<div className="leading-tight -mt-1 h-10">{value.tree[value.level].description}</div>
+										<div className="flex w-full justify-between items-center">
+											<div className="self-start group relative">
+												<button
+													className={style(value.tree[value.level].upgradeCost, value)}
+													onClick={() => handleUpgrade(value._id, value)}
+												>
+													{value.level < value.maxLevel ? (
+														<div className="flex items-center">
+															<div className="mr-1 flex gap-1 items-center">
+																{value.level === 0 ? (
+																	<svg
+																		width="20px"
+																		height="20px"
+																		viewBox="0 0 24 24"
+																		fill="none"
+																		xmlns="http://www.w3.org/2000/svg"
+																		className={svgStyle(value.tree[value.level].upgradeCost)}
+																	>
+																		<path
+																			d="M12 14.5V16.5M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288"
+																			stroke-width="2"
+																			stroke-linecap="round"
+																			stroke-linejoin="round"
+																		/>
+																	</svg>
+																) : (
+																	<svg
+																		width="20px"
+																		height="20px"
+																		viewBox="0 0 24 24"
+																		fill="none"
+																		xmlns="http://www.w3.org/2000/svg"
+																		className={svgStyle(value.tree[value.level].upgradeCost)}
+																	>
+																		<path
+																			d="M17.4 10L21 12L17.4 14M17.4 10L12 13L6.6 10M17.4 10L21 8L12 3L3 8L6.6 10M6.6 10L3 12L6.6 14M17.4 14L21 16L12 21L3 16L6.6 14M17.4 14L12 17L6.6 14"
+																			stroke-width="2"
+																			stroke-linecap="round"
+																			stroke-linejoin="round"
+																		/>
+																	</svg>
+																)}
+																{value.level === 0 ? 'Unlock' : 'Upgrade'}
+															</div>
+															<span className="tracking-tighter">
+																(
+																	{value.tree[value.level].upgradeCost.toLocaleString('en-US', {
+																		maximumFractionDigits: 2,
+																		notation: 'compact',
+																		compactDisplay: 'short'
+																	})}
+																)
+															</span>
+														</div>
+													) : (
+														<span>Max Level</span>
+													)}
+												</button>
+												<div className="absolute group-hover:opacity-100 opacity-0 transition-opacity bottom-10 left-0 w-full rounded-xl bg-gray-500 py-1 px-2.5 font-medium">
+													+ {value.tree[value.level].upgradeIncrease} {value.type}
+												</div>
+											</div>
+											<div className="flex items-center gap-1">
+												<p className="text-lg">{value.level !== 0 ? `Level ${value.level}` : ''}</p>
+											</div>
+										</div>
 
-									<div className="h-[3px] mt-0.5 relative">
-										<div
-											className={`${
-												value.level < value.maxLevel ? 'bg-yellow-primary' : 'bg-gray-500'
-											} absolute inset-0 rounded-full transition-all duration-250 w-full z-10`}
-											style={{ width: `${percentage(value.tree[value.level].upgradeCost)}%` }}
-										/>
-										<div className="bg-gray-500 absolute inset-0 transition-all rounded-full duration-250 w-full" />
+										<div className="h-[3px] mt-0.5 relative">
+											<div
+												className={`${
+													value.level < value.maxLevel ? 'bg-yellow-primary' : 'bg-gray-500'
+												} absolute inset-0 rounded-full transition-all duration-250 w-full z-10`}
+												style={{ width: `${percentage(value.tree[value.level].upgradeCost)}%` }}
+											/>
+											<div className="bg-gray-500 absolute inset-0 transition-all rounded-full duration-250 w-full" />
+										</div>
 									</div>
 								</div>
 							</SwiperSlide>

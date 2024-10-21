@@ -11,7 +11,14 @@ export default function Modal({ isOpen, close, submit }) {
 	const style = () => {
 		return `${rating && testimonial ? 
 		'bg-yellow-primary text-gray-900 font-bold hover:opacity-75'
-		: 'bg-gray-500 text-gray-300 font-semibold cursor-not-allowed'} outline-none text-[17px] transition rounded-xl py-1 px-2.5 overflow-hidden w-full mt-4`
+		: 'bg-gray-500 text-gray-300 font-semibold'} outline-none text-[17px] transition rounded-xl py-1.5 px-4 overflow-hidden w-full mt-6`
+	}
+
+	const reset = () => {
+		setHoverRating(0)
+		setRating(0)
+		setTestimonial('')
+		setName('')
 	}
 
 	return (
@@ -70,7 +77,7 @@ export default function Modal({ isOpen, close, submit }) {
 									<label for="testimonial" className="text-lg text-white font-medium">
 										Testimonial
 									</label>
-									<textarea id="testimonial" className="rounded-xl bg-gray-800 text-[17px] px-3.5 py-1.5 text-white outline-none focus:outline-none" onChange={(e) => setTestimonial(e.target.value)} />
+									<textarea id="testimonial" className="w-full rounded-xl bg-gray-800 text-[17px] px-3.5 py-1.5 text-white outline-none focus:outline-none" onChange={(e) => setTestimonial(e.target.value)} />
 									<label for="name" className="text-lg text-white font-medium mt-4">
 										Name (optional)
 									</label>
@@ -80,7 +87,7 @@ export default function Modal({ isOpen, close, submit }) {
 								<button 
 									className={style()}
 									disabled={!rating || !testimonial} 
-									onClick={() => { submit(rating, name, testimonial); close() }}
+									onClick={() => { submit(rating, name, testimonial); close(); reset() }}
 								>
 									Add your testimonial
 								</button>
