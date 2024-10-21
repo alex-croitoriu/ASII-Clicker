@@ -140,11 +140,11 @@ const UpgradeComponent = () => {
 														</div>
 														<span className="tracking-tighter">
 															(
-															{/* {value.tree[value.level].upgradeCost.toLocaleString('en-US', {
+															{value.tree[value.level].upgradeCost.toLocaleString('en-US', {
 																maximumFractionDigits: 2,
 																notation: 'compact',
 																compactDisplay: 'short'
-															})} */}
+															})}
 															)
 														</span>
 													</div>
