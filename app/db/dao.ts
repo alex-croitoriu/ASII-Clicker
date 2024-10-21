@@ -9,7 +9,7 @@ let client;
 let db;
 
 async function connect() {
-  if (!client) {
+  if (!client || !db) {
     client = new MongoClient(uri, {
       tlsCertificateKeyFile: credentials,
       serverApi: ServerApiVersion.v1,
