@@ -12,7 +12,7 @@ async function fetchInitialState() {
 const useFrameworkStore = create((set) => ({
   frameworks: 0,
   lifetimeFrameworks: 0,
-  frameworksPerClick: 0,
+  frameworksPerClick: 1,
   frameworksPerSecond: 0,
   loading: true,
   autoSaveIntervalId: null,
@@ -38,21 +38,28 @@ const useFrameworkStore = create((set) => ({
       if (state == null) {
         state = useFrameworkStore.getState();
       }
-      const response = await fetch("/api/game-state", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          frameworks: state.frameworks,
-          lifetimeFrameworks: state.lifetimeFrameworks,
-          frameworksPerClick: state.frameworksPerClick,
-          frameworksPerSecond: state.frameworksPerSecond,
-        }),
-      });
+      if (
+        state.frameworks != 0 ||
+        state.lifetimeFrameworks != 0 ||
+        state.frameworksPerClick != 1 ||
+        state.frameworksPerSecond != 0
+      ) {
+        const response = await fetch("/api/game-state", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            frameworks: state.frameworks,
+            lifetimeFrameworks: state.lifetimeFrameworks,
+            frameworksPerClick: state.frameworksPerClick,
+            frameworksPerSecond: state.frameworksPerSecond,
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to save game state");
+        if (!response.ok) {
+          throw new Error("Failed to save game state");
+        }
       }
     } catch (error) {
       console.error("Error sending game state:", error);
