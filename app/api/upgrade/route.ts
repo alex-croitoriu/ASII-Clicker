@@ -2,13 +2,15 @@ import { ObjectId } from "mongodb";
 
 const { connect, closeConnection } = require("../../db/dao");
 
-export async function GET(request) {
+export async function GET(_) {
   try {
     const db = await connect();
 
     const collection = db.collection("upgrade");
 
-    const result = await collection.find({}).toArray();
+    let result = await collection.find({}).toArray();
+
+    result.sort((a, b) => a.tree[0].upgradeCost - b.tree[0].upgradeCost)
 
     return new Response(JSON.stringify(result), {
       status: 200,

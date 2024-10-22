@@ -1,6 +1,6 @@
 const { connect, closeConnection } = require("../../db/dao");
 
-export async function GET(request) {
+export async function GET(_) {
   try {
     const db = await connect();
 

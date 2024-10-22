@@ -1,12 +1,14 @@
 const { connect, closeConnection } = require("../../db/dao");
 
-export async function GET(request) {
+export async function GET(_) {
   try {
     const db = await connect();
 
     const collection = db.collection("game-state");
 
     const result = await collection.find({}).toArray();
+
+    console.log(result)
 
     return new Response(JSON.stringify(result[0]), {
       status: 200,
