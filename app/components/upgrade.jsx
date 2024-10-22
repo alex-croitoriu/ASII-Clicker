@@ -138,7 +138,7 @@ const UpgradeComponent = () => {
 											<div dangerouslySetInnerHTML={{ __html: icon(value.name) }}></div>
 											<p className="text-xl font-semibold">{value.name}</p>
 										</div>
-										<div className="leading-tight -mt-1 h-10">{value.tree[value.level].description}</div>
+										<div className="leading-tight -mt-1 h-[60px]">{value.tree[value.level].description}</div>
 										<div className="flex w-full justify-between items-center">
 											<div className="self-start group relative">
 												<button
