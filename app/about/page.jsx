@@ -1,6 +1,6 @@
 export default function Page() {
     return (
-        <div className="bg-gray-800 flex flex-col gap-5 md:gap-7 lg:gap-8 p-5 md:p-7 lg:p-8">
+        <div className="bg-gray-800 flex flex-col gap-5 md:gap-7 lg:gap-8 p-5 md:pt-5 md:p-7 lg:p-8">
             <div className="max-w-5xl container mx-auto rounded-3xl bg-gray-600 px-4 py-3 md:px-6 md:py-4">
                 <h1 className="text-2xl lg:text-3xl font-semibold flex justify-center md:justify-start gap-1 lg:gap-2 items-center">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 lg:size-8">

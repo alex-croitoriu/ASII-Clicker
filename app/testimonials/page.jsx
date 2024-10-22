@@ -50,7 +50,7 @@ export default function Page() {
     }, data)
 
     return (
-        <div className="bg-gray-800 flex flex-col gap-4 p-5 md:p-7 lg:p-8">
+        <div className="bg-gray-800 flex flex-col gap-4 p-5 md:pt-5 md:p-7 lg:p-8">
             <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-[17px]">
 
                 {testimonials.map((testimonial, i) =>
